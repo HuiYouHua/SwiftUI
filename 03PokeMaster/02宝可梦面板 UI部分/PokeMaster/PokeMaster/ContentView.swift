@@ -10,7 +10,13 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        PokemonList()
+//        PokemonRootView()
+//        SettingRootView()
+        TabView(content:  {
+                    PokemonRootView().tabItem { Text("宝可梦列表") }.tag(1)
+                    SettingRootView().tabItem { Text("设置") }.tag(2)
+                })
+        .edgesIgnoringSafeArea(.top)
     }
 }
 

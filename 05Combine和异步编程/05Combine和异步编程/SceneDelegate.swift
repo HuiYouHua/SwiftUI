@@ -1,9 +1,8 @@
 //
 //  SceneDelegate.swift
-//  Calculator
+//  05Combine和异步编程
 //
-//  Created by Wang Wei on 2019/06/17.
-//  Copyright © 2019 OneV's Den. All rights reserved.
+//  Created by 华惠友 on 2021/1/7.
 //
 
 import UIKit
@@ -19,21 +18,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
-        // Use a UIHostingController as window root view controller
+        // Create the SwiftUI view that provides the window contents.
+        let contentView = ContentView()
+
+        // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: TestContentView())
+            window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
             window.makeKeyAndVisible()
         }
-
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
-        // The scene may re-connect later, as its session was not neccessarily discarded (see `application:didDiscardSceneSessions` instead).
+        // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {

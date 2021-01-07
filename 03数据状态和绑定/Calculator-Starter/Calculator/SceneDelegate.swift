@@ -23,6 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             ///最后，我们在 SceneDelegate.swift 文件中创建 ContentView 的地方，通过 environmentObject 把通用的 CalculatorModel 添加上去:
+            ///这里只需要将共享的数据放到上层即可,并非入口
             window.rootViewController = UIHostingController(rootView: ContentView().environmentObject(CalculatorModel()))
             self.window = window
             window.makeKeyAndVisible()

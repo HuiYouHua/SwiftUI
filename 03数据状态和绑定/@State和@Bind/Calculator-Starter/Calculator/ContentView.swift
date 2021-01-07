@@ -60,9 +60,9 @@ struct ContentView_Previews : PreviewProvider {
     static var previews: some View {
         Group {
             TestContentView()
-            ContentView()
-            ContentView().previewDevice("iPhone SE")
-            ContentView().previewDevice("iPad Air 2")
+//            ContentView()
+//            ContentView().previewDevice("iPhone SE")
+//            ContentView().previewDevice("iPad Air 2")
         }
     }
 }

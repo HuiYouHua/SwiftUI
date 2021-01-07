@@ -20,7 +20,6 @@ let scale = UIScreen.main.bounds.width / 414
  
  ObservableObject 和 @ObjectBinding
  如果说 @State 是全自动驾驶的话，ObservableObject 就是半自动，它需要一些额 外的声明。ObservableObject 协议要求实现类型是 class，它只有一个需要实现的
- 更多iOS课程，加V获取:iOS77777iOS
  属性:objectWillChange。在数据将要发生改变时，这个属性用来向外进行 “广播”， 它的订阅者 (一般是 View 相关的逻辑) 在收到通知后，对 View 进行刷新。
  创建 ObservableObject 后，实际在 View 里使用时，我们需要将它声明为 @ObservedObject。这也是一个属性包装，它负责通过订阅 objectWillChange 这个 “广播”，将具体管理数据的 ObservableObject 和当前的 View 关联起来。
  */
@@ -171,8 +170,6 @@ struct HistoryView: View {
 
 /**
  总结:
- 本章中，我们看到了 SwiftUI 中的几种处理数据和逻辑的方式。根据适用范围和存储 状态的复杂度的不同，需要选取合适的方案。@State 和 @Binding 提供 View 内部 的状态存储，它们应该是被标记为 private 的简单值类型，仅在内部使用。 ObservableObject 和 @ObservedObject 则针对跨越 View 层级的状态共享，它可以
- 更多iOS课程，加V获取:iOS77777iOS
- 处理更复杂的数据类型，其引用类型的特点，也让我们需要在数据变化时通过某种 手段向外发送通知 (比如手动调用 objectWillChange.send() 或者使用 @Published)， 来触发界面刷新。对于 “跳跃式” 跨越多个 View 层级的状态，@EnvironmentObject 能让我们更方便地使用 ObservableObject，以达到简化代码的目的。
+ 本章中，我们看到了 SwiftUI 中的几种处理数据和逻辑的方式。根据适用范围和存储 状态的复杂度的不同，需要选取合适的方案。@State 和 @Binding 提供 View 内部 的状态存储，它们应该是被标记为 private 的简单值类型，仅在内部使用。 ObservableObject 和 @ObservedObject 则针对跨越 View 层级的状态共享，它可以处理更复杂的数据类型，其引用类型的特点，也让我们需要在数据变化时通过某种 手段向外发送通知 (比如手动调用 objectWillChange.send() 或者使用 @Published)， 来触发界面刷新。对于 “跳跃式” 跨越多个 View 层级的状态，@EnvironmentObject 能让我们更方便地使用 ObservableObject，以达到简化代码的目的。
  随着经验的积累，你会逐渐形成对于某个场景下应该使用哪种方式来管理数据和状 态的直觉。在此之前，如果你纠结于选择使用哪种方式的话，从 ObservableObject 开始入手会是一个相对好的选择:如果发现状态可以被限制在同一个 View 层级中， 则改用 @State;如果发现状态需要大批量共享，则改用 @EnvironmentObject。
  */

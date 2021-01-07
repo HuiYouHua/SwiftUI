@@ -45,17 +45,13 @@ struct PokemonInfoPanel: View {
             Divider()
             AbilityList(model: model, abilityModels: abilities)
         }
-        
         .padding(EdgeInsets(top: 12, leading: 30, bottom: 30, trailing: 30))
-        
 //        .background(Color.white)
         .blurBackground(style: darkBlur ? .systemMaterialDark : .systemMaterial)
         //idealHeight 和 fixedSize 配合能限制区域
 //        .frame(idealHeight: 600)
         .cornerRadius(20)
         .fixedSize(horizontal: false, vertical: true)
-
-
     }
 }
 

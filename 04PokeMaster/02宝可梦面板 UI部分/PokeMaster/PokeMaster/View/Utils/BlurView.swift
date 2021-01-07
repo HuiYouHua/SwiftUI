@@ -17,7 +17,8 @@ struct BlurView: UIViewRepresentable {
     //为了更好的泛用性，我们将控制模糊样式的 UIBlurEffect.Style 作为成员变量 使用。这样在 SwiftUI 层可以通过控制 style 来决定需要什么样的模糊效果。
     let style: UIBlurEffect.Style
     
-    init(style: UIBlurEffect.Style) { print("Init")
+    init(style: UIBlurEffect.Style) {
+        print("Init")
         self.style = style
     }
     
@@ -44,6 +45,11 @@ struct BlurView: UIViewRepresentable {
     
     //对于模糊背景的需求，我们不需要关心更新的问题。所以把 updateUIView 留 空。
     func updateUIView(_ uiView: UIViewType, context: Context) {
+        for v in uiView.subviews {
+            if let blurView = v as? UIVisualEffectView {
+                blurView.effect = UIBlurEffect(style: style)
+            }
+        }
         print("updateUIView")
     }
 }

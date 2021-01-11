@@ -246,9 +246,9 @@
 			children = (
 				BE56180F25A72984002DEC6C /* Store.swift */,
 				BE56181325A7298E002DEC6C /* AppState.swift */,
+				BE56181C25A729A4002DEC6C /* AppCommand.swift */,
 				BE56181625A72995002DEC6C /* AppAction.swift */,
 				BE56181925A7299C002DEC6C /* AppError.swift */,
-				BE56181C25A729A4002DEC6C /* AppCommand.swift */,
 			);
 			path = DataFlow;
 			sourceTree = "<group>";

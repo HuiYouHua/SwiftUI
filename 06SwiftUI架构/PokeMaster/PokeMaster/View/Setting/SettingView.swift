@@ -55,11 +55,20 @@ import Combine
 
 /**
  Swift Redux 的数据流动方式
- 1. 将 app 当作一个状态机，状态决定用户界面。
- 2. 这些状态都保存在一个 Store 对象中。
- 3. View 不能直接操作 State，而只能通过发送 Action 的方式，间接改变存储在 Store 中的 State。
- 4. Reducer 接受原有的 State 和发送过来的 Action，生成新的 State。
+ 1. 将 app 当作一个状态机[Store]，状态决定用户界面。
+ 2. 这些状态[AppState]都保存在一个 Store 对象中。
+ 3. View 不能直接操作 State，而只能通过发送 Action[AppAction] 的方式，间接改变存储在 Store 中的 State。
+ 4. Reducer 接受原有的 State 和发送过来的 Action，生成新的 State ```static func reduce(state: AppState, action: AppAction) -> AppState]```。
  5. 用新的 State 替换 Store 中原有的状态，并用新状态来驱动更新界面。
+ ```
+ let result = Store.reduce(state: appState, action: action)
+ appState = result
+ ```
+ 6.由于这里是用的@Publishing 修饰的 appState, 所以当 appState 被修改时, 会通知到View中的 store, 从而刷新跟store有关的UI及数据
+ 7.通过按钮点击发出Action
+ ```
+ self.store.dispatch(.login(email: self.settings.email, password: self.settings.password))
+ ```
  
  传统 Redux 有两点比较大的限制，在 SwiftUI 中会显得有些水土不服，可能需要一 些改进。
  首先，“只能通过发送 Action 的方式，间接改变存储在 Store 中的 State” 这个要求 太过严格。SwiftUI 有着方便和现成的 Binding 行为，来完成状态和界面的双向绑定。使用这个特性可以大幅简化程序的编写，同时保持数据流的清晰稳定。因此，我们希 望为状态改变设置一个例外:除了通过 Action 外，也可以通过 Binding 来改变状态。
@@ -79,6 +88,12 @@ struct SettingView: View {
             optionSection
             actionSection
         }
+        //在 SettingView 中，使用 .alert 来弹出一个 Alert 对话框。alert(item:content:) 接受 一个 Identifiable? 的绑定，当这个绑定值不为 nil 时，显示一个弹框。用户在点击弹 框按钮 dismiss 弹框时，绑定值将被置回 nil。这正好满足我们使用 loginError 来驱 动弹窗的需求。我们在 SettingView 的 body 最后添加相关代码:
+        //alert 还有一种接受 Binding<Bool> 的变形:alert(isPresented:content:)。当 isPresented 绑定的底层值为 true 时显示弹窗。相比起来，接受 item 的版 本可以让我们传递一个更详细的上下文，是相对更强大的版本。
+        //在 UIKit 中，弹窗是由 UIAlertController 负责的，除了示例中展示的弹 窗方式以外，还有一种形式，是从屏幕下方弹出选项卡。在 SwiftUI 里，actionSheet 对应的就是选项卡形式的 UI。和 alert 类似，它也接 受 isPresented: Binding<Bool> 和 item: Binding<Identifiable?> 两 种 配 置 形式。
+        .alert(item: settingBinding.loginError) { (error) -> Alert in
+            Alert(title: Text(error.localizedDescription))
+        }
     }
 
     var accountSection: some View {
@@ -95,9 +110,13 @@ struct SettingView: View {
                 if settings.accountBehavior == .register {
                     SecureField("确认密码", text: settingBinding.verifyPassword)
                 }
-                Button(settings.accountBehavior.text) {
-                    //最后，在 SettingView 中按下登录按钮时，把刚刚定义的 .login Action 发送给 store
-                    self.store.dispatch(.login(email: self.settings.email, password: self.settings.password))
+                if settings.loginReuqesting {
+                    Text("登录中...")
+                } else {
+                    Button(settings.accountBehavior.text) {
+                        //最后，在 SettingView 中按下登录按钮时，把刚刚定义的 .login Action 发送给 store
+                        self.store.dispatch(.login(email: self.settings.email, password: self.settings.password))
+                    }
                 }
             } else {
                 Text(settings.loginUser!.email)

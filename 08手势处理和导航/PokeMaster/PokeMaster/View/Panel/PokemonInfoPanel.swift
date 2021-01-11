@@ -33,8 +33,12 @@ struct PokemonInfoPanel: View {
     var body: some View {
         VStack(spacing: 20) {
             topIndicator
-            Header(model: model)
-            pokemonDescription
+//            Header(model: model)
+//            pokemonDescription
+            Group {
+                Header(model: model)
+                pokemonDescription
+            }.animation(nil)//由于我们添加的动画不仅作用于 VStack，也会作用于它的全部子 View。对于图示的这部分文本，我们所希望的是，即使起始状态和终结状态间的文 本宽度和高度 (行数) 不匹配，也直接显示最终状态，而不是逐渐改变宽度和高度。为 了达到这一点，在 PokemonInfoPanel 里，我们可以显式地指明不需要动画
             Divider()
             AbilityList(
                 model: model,

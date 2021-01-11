@@ -35,19 +35,9 @@ struct MainTab: View {
             }
         }
         .edgesIgnoringSafeArea(.top)
-        .overlay(panel)
-    }
-
-    var panel: some View {
-        Group {
-            if pokemonList.selectionState.panelPresented {
-                if selectedPanelIndex != nil && pokemonList.pokemons != nil {
-                    PokemonInfoPanelOverlay(model: pokemonList.pokemons![selectedPanelIndex!]!)
-                } else {
-                    EmptyView()
-                }
-            } else {
-                EmptyView()
+        .overlaySheet(isPresented: pokemonListBinding.selectionState.panelPresented) {
+            if selectedPanelIndex != nil && pokemonList.pokemons != nil {
+                PokemonInfoPanel(model: self.pokemonList.pokemons![selectedPanelIndex!]!)
             }
         }
     }

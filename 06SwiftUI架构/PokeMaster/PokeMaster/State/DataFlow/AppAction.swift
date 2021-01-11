@@ -13,4 +13,6 @@ enum AppAction {
     case login(email: String, password: String)
     //异步操作的第二个关键时间点是操作结束，希望使用得到的结果更新 UI 时。在我们 的例子中，这对应着 LoginAppCommand 里 receiveCompletion 和 receiveValue 两个回调。和 View 中不能直接更改 State，而是使用 Action 的规则一样，在 Command 里我们也会向 Store 发送一个 Action 来修改状态。在 AppAction 里，新 加一个 enum 成员:
     case accountBehaviorDone(result: Result<User, AppError>)
+    //注销
+    case logout
 }

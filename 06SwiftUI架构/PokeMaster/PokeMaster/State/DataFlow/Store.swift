@@ -59,6 +59,8 @@ class Store: ObservableObject {
                 print("Error: \(error.localizedDescription)")
                 appState.settings.loginError = error
             }
+        case .logout:
+            appState.settings.loginUser = nil
         }
         return (appState, appCommand)
     }

@@ -111,7 +111,8 @@ struct SettingView: View {
                     SecureField("确认密码", text: settingBinding.verifyPassword)
                 }
                 if settings.loginReuqesting {
-                    Text("登录中...")
+//                    Text("登录中...")
+                    ActivityIndicatorView(style: .medium, isAnimating: settingBinding.loginReuqesting)
                 } else {
                     Button(settings.accountBehavior.text) {
                         //最后，在 SettingView 中按下登录按钮时，把刚刚定义的 .login Action 发送给 store
@@ -121,7 +122,7 @@ struct SettingView: View {
             } else {
                 Text(settings.loginUser!.email)
                 Button("注销") {
-                    print("注销")
+                    self.store.dispatch(.logout)
                 }
             }
             
@@ -134,8 +135,8 @@ struct SettingView: View {
                 Text("显示英文名")
             }
             Picker(selection: settingBinding.sorting, label: Text("排序方式")) {
-                ForEach(AppState.Settings.Sorting.allCases, id: \.self) {
-                    Text($0.text)
+                ForEach(Sorting.allCases, id: \.self) {
+                    Text($0.rawValue)
                 }
             }
             Toggle(isOn: settingBinding.showFavoriteOnly) {
@@ -155,16 +156,9 @@ struct SettingView: View {
     }
 }
 
-extension AppState.Settings.Sorting {
-    var text: String {
-        switch self {
-        case .id: return "ID"
-        case .name: return "名字"
-        case .color: return "颜色"
-        case .favorite: return "最爱"
-        }
-    }
-}
+//extension AppState.Settings.Sorting {
+//
+//}
 
 extension AppState.Settings.AccountBehavior {
     var text: String {

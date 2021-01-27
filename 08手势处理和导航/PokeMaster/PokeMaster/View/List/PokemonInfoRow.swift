@@ -11,7 +11,7 @@ import SwiftUI
 struct PokemonInfoRow: View {
 
     @EnvironmentObject var store: Store
-
+//    @State var isSFViewActive = false
     let model: PokemonViewModel
     let expanded: Bool
 
@@ -49,10 +49,22 @@ struct PokemonInfoRow: View {
                     Image(systemName: "chart.bar")
                         .modifier(ToolButtonModifier())
                 }
-                Button(action: {}) {
-                    Image(systemName: "info.circle")
-                        .modifier(ToolButtonModifier())
-                }
+//                Button(action: {}) {
+//                    Image(systemName: "info.circle")
+//                        .modifier(ToolButtonModifier())
+//                }
+                //注意，NavigationLink 只在当前 View 处于 NavigationView 中才有效。在我 们的例子中，NavigationView 被定义在 PokemonRootView 里。
+                NavigationLink(
+                    destination: SafariView(url: model.detailPageURL) {
+                        ///在 SafariView 的 onFinished 调用后，把属于当前 PokemonInfoRow 的 isSFViewActive 设为 false
+                        //不过，上面这样用 @State 的方式，不太符合示例 app 中的架构模式: isSFViewActive 控制的不仅仅是自身 View 中临时状态，而是影响了整个 app UI 结 构的状态。简单地使用这样的 @State，破坏了 model 和 view 的对应关系。我们会 想办法将这个状态放到 AppState 里，用 AppAction 来修改状态并驱动 UI。
+//                        self.isSFViewActive = false
+                        self.store.dispatch(.closeSafariView)
+                    }.navigationBarTitle(Text(model.name), displayMode: .inline),
+                    isActive: expanded ? $store.appState.pokemonList.isSFViewActive : .constant(false),
+                    label: {
+                        Image(systemName: "info.circle").modifier(ToolButtonModifier())
+                    })
             }
             .padding(.bottom, 12)
             .opacity(expanded ? 1.0 : 0.0)

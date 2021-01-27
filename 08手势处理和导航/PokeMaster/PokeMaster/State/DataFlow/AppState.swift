@@ -12,6 +12,7 @@ import Foundation
 struct AppState {
     var settings = Settings()
     var pokemonList = PokemonList()
+    var mainTab = MainTab()
 }
 
 extension AppState {
@@ -108,6 +109,8 @@ extension AppState {
         var selectionState = SelectionState()
 
         var searchText = ""
+        
+        var isSFViewActive = false
 
         func displayPokemons(with settings: Settings) -> [PokemonViewModel] {
 
@@ -165,5 +168,15 @@ extension AppState {
                 .filter(filterFunc)
                 .sorted(by: sortFunc)
         }
+    }
+}
+
+extension AppState {
+    struct MainTab {
+        enum Index: Hashable {
+            case list, settings
+        }
+        
+        var selection: Index = .list
     }
 }

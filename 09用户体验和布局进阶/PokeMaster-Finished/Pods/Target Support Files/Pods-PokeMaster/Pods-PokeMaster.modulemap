@@ -1,0 +1,6 @@
+framework module Pods_PokeMaster {
+  umbrella header "Pods-PokeMaster-umbrella.h"
+
+  export *
+  module * { export * }
+}
